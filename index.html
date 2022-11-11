@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>KeepApp - Your personal note keeper</title>
+</head>
+<!-- When the document loads the existing notes should be fetched -->
+<style>
+    #note-input-panel{
+    width: 50vw;
+    margin: auto;
+    margin-top: 30px;
+}
+
+#note-container{
+    /* margin: auto; */
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-around; */
+}
+</style>
+<body >
+    <!-- header -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">KeepApp</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="toggleView()">Toggle View</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- note taker panel -->
+    <div class="accordion" id="note-input-panel">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="false" aria-controls="collapseOne">
+                    Take Note
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                data-bs-parent="#note-input-panel">
+                <div class="accordion-body">
+                    <!-- Design HTML form that captures note-title and note-content as inputs
+                         and saves the note when form is submitted -->
+                    <!-- Ensure validations are applied to prevent form from 
+                        submitting if the inputs are invalid -->
+                        <form id="myform" onsubmit="saveNote()">
+                            <form id="myform">
+                                Title :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input id="titleId" name="title" placeholder="Note Title" type="text"></br><br>
+                                Content : <input id="contentId" name="content" placeholder="Note Content" type="text"></br><br>
+                                <!-- <input type="submit" value="Save Note"><br/> -->
+                                <input type="button" value="Save Note" id="saveNoteId">
+                                <input type="button" value="Clear Fields" id="clearFieldsId">
+                            </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- note view panel -->
+    <div id="note-container" class="container " style="border:2px solid;display:block">
+        <!-- Notes should get displayed here -->
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+
+    <!-- link the script.js file to save and load notes -->
+    <script>
+        let noteList = [];
+
+let view = "grid"; //default view is grid-view
+let idCount = 0;
+let titleVar = document.getElementById("titleId");
+let contentVar = document.getElementById("contentId");
+
+let saveNoteVar = document.getElementById("saveNoteId");
+
+saveNoteVar.onclick =function() {createNoteCard(idCount)};
+saveNoteVar.addEventListener("click",saveNote);
+function saveNote() {
+    noteList.push({id: idCount,
+                    Title: titleVar.value,
+                    Content:contentVar.value
+    })
+console.log("Note of Id "+ idCount+" has been created");
+idCount = idCount + 1;
+console.log(noteList);
+document.getElementById('myform').reset();
+}
+
+
+function deleteNote(note) {
+    //deleting respective div from container
+    let idArray = note.split("");
+    idArray.splice(0,6,'n','o','t','e');
+    noteId = idArray.join('');
+    document.getElementById(noteId).remove();
+
+    //deleting respective element from array
+    idNum = idArray.slice(4).join('');
+    noteList.splice(idNum,1);
+    console.log(idNum);
+    console.log(noteId);
+}
+
+let clearFieldsVar=document.getElementById("clearFieldsId");
+clearFieldsVar.addEventListener("click",clearFields)
+function clearFields() {
+    document.getElementById("myform").reset();
+    console.log("Form has been reset");
+    
+}
+
+function fetchNotes() {
+    
+}
+
+function loadNoteData() {
+    
+}
+
+function updateNoteData(note) {
+    
+}
+
+function createNoteCard(note) {
+
+    let newPcont = document.createElement("div");
+    newPcont.setAttribute('id','note'+note);
+    newPcont.setAttribute('class','notes');
+    newPcont.style.width="100%";
+    // newPcont.style.border='2px solid green';
+    document.getElementById("note-container").append(newPcont);
+
+    let newP = document.createElement("h2");
+    document.getElementById('note'+note).append(newP);
+    newP.setAttribute('class','noteCards');
+    newP.innerHTML = idCount;
+    newP.style.display='inline-block';
+    //newP.style.backgroundColor='#cc99ff';
+    newP.style.width="5%";
+    // newP.style.border='2px solid ';
+
+    let newPP = document.createElement("h4");
+    document.getElementById('note'+note).append(newPP);
+    newPP.setAttribute('style','word-wrap: break-word');
+    newPP.style.display='inline-block';
+    newPP.style.width="20%";
+    // newPP.style.border='2px solid blue';
+    newPP.innerHTML = titleVar.value;
+    //newPP.style.backgroundColor="#d9b3ff";
+
+    let newPPP = document.createElement("p");
+    document.getElementById('note'+note).append(newPPP);
+    
+    newPPP.setAttribute('style','word-wrap: break-word');
+    newPPP.style.display='inline-block';
+    newPPP.style.width="60%";
+    // newPPP.style.border='2px solid blue';
+    newPPP.innerHTML = contentVar.value;
+    //newPPP.style.backgroundColor="#e6ccff";
+
+    let newPPPP = document.createElement("button");
+    document.getElementById('note'+note).append(newPPPP);
+    newPPPP.setAttribute('id','delete'+note);
+    newPPPP.setAttribute('class','note'+note);
+    newPPPP.setAttribute('onclick',"deleteNote(this.id)");
+    newPPPP.style.display='inline-block';
+    newPPPP.style.width="12%";
+    // newPPPP.style.border='2px solid blue';
+    newPPPP.style.margin='5px';
+    newPPPP.innerHTML = "Delete";
+    // newPPPP.style.backgroundColor="#ff6666";
+    
+    console.log("Note card created");
+
+    let ruler = document.createElement('hr');
+    document.getElementById('note'+note).append(ruler);
+    
+    
+    
+}
+
+function toggleView() {
+    let cont = document.getElementById('note-container');
+    cont.style.display='none';
+
+    let toggleCont = document.createElement("div");
+    document.body.append(toggleCont);
+    toggleCont.setAttribute('id','tog-cont');
+    toggleCont.classList.add('toggle-container');
+    toggleCont.classList.add('row');
+
+    for(const list of noteList){
+        let oneNote = document.createElement("div");
+        document.getElementById('tog-cont').append(oneNote);
+        oneNote.classList.add('col-3');
+        oneNote.setAttribute('id','noteNo'+list.id)
+        oneNote.style.backgroundColor=' #e6e6e6';
+        oneNote.style.border = '2px solid black';
+        oneNote.style.padding="20px";
+        
+        let noteTitle = document.createElement('h3');
+        document.getElementById('noteNo'+list.id).append(noteTitle);
+        noteTitle.innerHTML = list.id+" | "+list.Title;
+        noteTitle.style.textDecoration='underline';
+        noteTitle.setAttribute('style','word-wrap: break-word');
+
+        let noteContent = document.createElement('div');
+        document.getElementById('noteNo'+list.id).append(noteContent);
+        noteContent.innerHTML = list.Content;
+        noteContent.setAttribute('style','word-wrap: break-word');
+        
+
+    }
+
+    
+
+
+    
+    
+}
+
+    </script>
+</body>
+
+</html>
